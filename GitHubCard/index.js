@@ -49,7 +49,6 @@ const followersArray = [
 followersArray.forEach(user => {
   axios.get(`https://api.github.com/users/${user}`).then(response => {
     const gitCard = githubCard(response.data)
-    console.log(response.data.avatar_url);
     const gitCards = document.querySelector('.cards')
     gitCards.appendChild(gitCard)
   })
@@ -99,9 +98,9 @@ function githubCard(arg) {
 
   gitProfPic.src = arg.avatar_url;
   gitName.textContent = arg.name;
-  gitUserName.textContent = arg.login;
   gitLocation.textContent = arg.location;
   gitProfile.href = arg.html_url;
+  gitProfile.textContent = arg.html_url;
   gitFollowers.textContent = `Followers: ${arg.followers}`;
   gitFollowing.textContent = `Following: ${arg.following}`;
   gitBio.textContent = arg.bio;
