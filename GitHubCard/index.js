@@ -3,6 +3,17 @@
            https://api.github.com/users/<your name>
 */
 
+axios.get('https://api.github.com/users/ackers93')
+  .then(data => {
+    console.log('data: ', data)
+    const myAccount = data.data;
+    console.log('UserInfo: ', myAccount)
+
+    const gitCards = document.querySelector('cards')
+    const gitCardInfo = githubCard(myAccount)
+    gitCards.appendChild(cardInfo)
+  })
+
 /* Step 2: Inspect and study the data coming back, this is YOUR 
    github info! You will need to understand the structure of this 
    data in order to use it to build your component function 
@@ -14,6 +25,8 @@
            create a new component and add it to the DOM as a child of .cards
 */
 
+
+
 /* Step 5: Now that you have your own card getting added to the DOM, either 
           follow this link in your browser https://api.github.com/users/<Your github name>/followers 
           , manually find some other users' github handles, or use the list found 
@@ -24,7 +37,22 @@
           user, and adding that card to the DOM.
 */
 
-const followersArray = [];
+const followersArray = [
+
+  'AndrewMaddocks',
+  'Hail91',
+  'vtellez1',
+  'emilybruner',
+  'kaihaskell'
+];
+
+followersArray.forEach(user => {
+  axios.get(`https://api.github.com/users/${user}`).then(data => {
+    const gitCard = githubCard(data.data)
+    const gitCards = document.querySelector('cards')
+    gitCards.appendChild(gitCard)
+  })
+})
 
 /* Step 3: Create a function that accepts a single object as its only argument,
           Using DOM methods and properties, create a component that will return the following DOM element:
@@ -45,6 +73,46 @@ const followersArray = [];
 </div>
 
 */
+
+function githubCard(arg) {
+  const gitCard = document.createElement("div"),
+    gitProfPic = document.createElement("img"),
+    gitCardInfo = document.createElement("div"),
+    gitName = document.createElement("h3"),
+    gitUserName = document.createElement("p"),
+    gitLocation = document.createElement("p"),
+    gitProfile = document.createElement("a"),
+    gitFollowers = document.createElement("p"),
+    gitFollowing = document.createElement("p"),
+    gitBio = document.createElement("p");
+
+  gitCard.appendChild(gitProfPic);
+  gitCard.appendChild(gitCardInfo);
+  gitCardInfo.appendChild(gitName);
+  gitCardInfo.appendChild(gitUserName);
+  gitCardInfo.appendChild(gitLocation);
+  gitCardInfo.appendChild(gitProfile);
+  gitCardInfo.appendChild(gitFollowers);
+  gitCardInfo.appendChild(gitFollowing);
+  gitCardInfo.appendChild(gitBio);
+
+  gitProfPic.src = arg.data.avatar_url;
+  gitName.textContent = arg.data.name;
+  gitUserName.textContent = arg.data.login;
+  gitLocation.textContent = arg.data.location;
+  gitProfile.href = arg.data.profile;
+  gitFollowers.textContent = `Followers: ${arg.data.followers}`;
+  gitFollowing.textContent = `Following: ${arg.data.following}`;
+  gitBio.textContent = arg.data.bio;
+
+
+  gitCard.classList.add("card");
+  gitCardInfo.classList.add("card-info");
+  gitName.classList.add("name");
+  gitUserName.classList.add("username");
+
+  return card;
+}
 
 /* List of LS Instructors Github username's: 
   tetondan
