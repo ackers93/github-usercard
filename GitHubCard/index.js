@@ -9,9 +9,9 @@ axios.get('https://api.github.com/users/ackers93')
     const myAccount = data.data;
     console.log('UserInfo: ', myAccount)
 
-    const gitCards = document.querySelector('cards')
+    const gitCards = document.querySelector('.cards')
     const gitCardInfo = githubCard(myAccount)
-    gitCards.appendChild(cardInfo)
+    gitCards.appendChild(gitCardInfo)
   })
 
 /* Step 2: Inspect and study the data coming back, this is YOUR 
@@ -47,9 +47,10 @@ const followersArray = [
 ];
 
 followersArray.forEach(user => {
-  axios.get(`https://api.github.com/users/${user}`).then(data => {
-    const gitCard = githubCard(data.data)
-    const gitCards = document.querySelector('cards')
+  axios.get(`https://api.github.com/users/${user}`).then(response => {
+    const gitCard = githubCard(response.data)
+    console.log(response.data.avatar_url);
+    const gitCards = document.querySelector('.cards')
     gitCards.appendChild(gitCard)
   })
 })
@@ -91,19 +92,19 @@ function githubCard(arg) {
   gitCardInfo.appendChild(gitName);
   gitCardInfo.appendChild(gitUserName);
   gitCardInfo.appendChild(gitLocation);
-  gitCardInfo.appendChild(gitProfile);
+  gitUserName.appendChild(gitProfile);
   gitCardInfo.appendChild(gitFollowers);
   gitCardInfo.appendChild(gitFollowing);
   gitCardInfo.appendChild(gitBio);
 
-  gitProfPic.src = arg.data.avatar_url;
-  gitName.textContent = arg.data.name;
-  gitUserName.textContent = arg.data.login;
-  gitLocation.textContent = arg.data.location;
-  gitProfile.href = arg.data.profile;
-  gitFollowers.textContent = `Followers: ${arg.data.followers}`;
-  gitFollowing.textContent = `Following: ${arg.data.following}`;
-  gitBio.textContent = arg.data.bio;
+  gitProfPic.src = arg.avatar_url;
+  gitName.textContent = arg.name;
+  gitUserName.textContent = arg.login;
+  gitLocation.textContent = arg.location;
+  gitProfile.href = arg.html_url;
+  gitFollowers.textContent = `Followers: ${arg.followers}`;
+  gitFollowing.textContent = `Following: ${arg.following}`;
+  gitBio.textContent = arg.bio;
 
 
   gitCard.classList.add("card");
@@ -111,7 +112,7 @@ function githubCard(arg) {
   gitName.classList.add("name");
   gitUserName.classList.add("username");
 
-  return card;
+  return gitCard;
 }
 
 /* List of LS Instructors Github username's: 
